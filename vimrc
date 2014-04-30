@@ -33,10 +33,17 @@ filetype plugin indent off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-
 Bundle 'gmarik/vundle'
 Bundle 'Lokaltog/vim-easymotion'
-let g:EasyMotion_leader_key = 'f'
+map <Space> <Plug>(easymotion-s2)
+
+map <Space>h <Plug>(easymotion-lineforward)
+map <Space>j <Plug>(easymotion-j)
+map <Space>k <Plug>(easymotion-k)
+map <Space>l <Plug>(easymotion-linebackward)
+let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+
+let g:EasyMotion_smartcase = 1
 
 Bundle 'bling/vim-airline'
 let g:airline_left_sep = ''
@@ -101,8 +108,10 @@ Bundle 'vim-scripts/bufexplorer.zip'
 noremap <silent> <CR> :BufExplorer<CR>
 
 Bundle 'digitaltoad/vim-jade'
-Bundle 'mileszs/ack.vim'
-Bundle 'vim-scripts/nerdtree-ack'
+" Bundle 'mileszs/ack.vim'
+" Bundle 'vim-scripts/nerdtree-ack'
+Bundle "epmatsw/ag.vim"
+Bundle "taiansu/nerdtree-ag"
 
 " ISSUE: https://github.com/joedicastro/dotfiles/issues/12
 " Bundle 'terryma/vim-multiple-cursors'
@@ -123,27 +132,37 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-repeat'
 Bundle 'terryma/vim-expand-region'
-map <Space> <Plug>(expand_region_expand)
+map + <Plug>(expand_region_expand)
 map - <Plug>(expand_region_shrink)
 noremap + =
 
-Bundle 'thiderman/nginx-vim-syntax'
 Bundle 'mattn/emmet-vim'
-Bundle 'jnwhiteh/vim-golang'
-Bundle 'gkz/vim-ls'
-set runtimepath+=$GOROOT/misc/vim
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
 
-Bundle 'mustache/vim-mode'
+Bundle 'jnwhiteh/vim-golang'
 Bundle 'kchmck/vim-coffee-script'
 autocmd FileType litcoffee runtime ftplugin/coffee.vim
 
 Bundle 'mintplant/vim-literate-coffeescript'
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
 
-Bundle 'tpope/vim-fugitive'
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+
 Bundle 'junegunn/goyo.vim'
-
+Bundle 'wellle/targets.vim'
+Bundle 'wting/rust.vim'
+Bundle 'vim-scripts/applescript.vim'
+Bundle 'airblade/vim-gitgutter'
 " }}}
 
 " Formatting {{{
@@ -204,6 +223,9 @@ endif
 :highlight TrailWhitespace ctermbg=red guibg=red
 :match TrailWhitespace /\s\+$\| \+\ze\t/
 
+" Highlight signcolumn
+:highlight! link SignColumn LineNr
+
 set nowrap
 set whichwrap=b,s,<,>,[,],h,l
 
@@ -225,14 +247,16 @@ nnoremap : ;
 " emacs style key binding for insert mode
 inoremap <C-a> <Home>
 inoremap <C-e> <End>
-inoremap <C-b> <C-o>b
-inoremap <C-w> <C-o>w
-inoremap <C-u> <Esc><Right>c0
+inoremap <silent> <C-l> <C-o>l
+inoremap <silent> <C-b> <C-o>b
+inoremap <silent> <C-w> <C-o>w
+inoremap <C-u> <Esc>viw~
+nnoremap <C-u> viw~
 
 xnoremap p pgvy
 noremap vp viwpgvy
 noremap vy yiw
-nnoremap K "_d
+nmap K +p
 " nnoremap ~ /=expand("<cword>")
 nnoremap ~ ma*
 
@@ -251,6 +275,8 @@ endif
 " reselect visual block after indent/outdent
 vnoremap , <gv
 vnoremap . >gv
+
+vnoremap ! !ruby<CR>
 
 " make Y behave like other capitals
 noremap Y y$
@@ -309,4 +335,3 @@ endif
 " }}}
 
 autocmd BufReadPre * if getfsize(expand("%")) > 10000000 | syntax off | endif
-

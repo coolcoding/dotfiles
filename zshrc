@@ -30,14 +30,13 @@ ZSH_HIGHLIGHT_PATTERNS+=('rm -[rf]*' 'fg=white,bold,bg=red')
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/usr/local/sbin:$HOME/.rvm/bin:/usr/local/share/npm/bin:/Applications/MNPP/init
-export PATH=$PATH:/Users/luin/.rvm/gems/ruby-1.9.3-p194/bin
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # This loads RVM into a shell session.
+export PATH=/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/usr/local/sbin:$PATH
 
 # Shortcuts
 alias psgrep="ps aux | grep -v grep | grep"
-alias l="ls -alh"
+alias ls="ls -alh"
 alias v="vim"
+alias n="node"
 mkcd() { mkdir -p "$@" && cd "$_"; }
 
 # Get OS X Software Updates, update Homebrew itself, and upgrade installed Homebrew packages
@@ -55,6 +54,13 @@ alias m="mux start"
 # Git
 alias glog="git l"
 alias gla="git la"
+alias gfla="git fetch --all && git la"
+
+setopt NO_NOMATCH
+
+if { [ "$TERM" = "screen" ] && [ -n "$TMUX" ]; } then
+  export PS1="%{$fg[cyan]%}%c$(git_prompt_info) %(!.%{$fg_bold[red]%}#.%{$fg_bold[red]%}❯)%{$reset_color%}"
+fi
 
 # Language
 export LANG="zh_CN.UTF-8"
@@ -67,9 +73,3 @@ export LC_TIME="zh_CN.UTF-8"
 export LC_ALL=
 
 export EDITOR='vim'
-
-export PATH=/Applications/MNPP/init:/Applications/MNPP/Library/php54/bin:/Applications/MNPP/Library/mysql/bin:$PATH
-export DYLD_LIBRARY_PATH=/Applications/MNPP/init:/Applications/MNPP/Library/lib:/Applications/MNPP/init:/Applications/MNPP/Library/lib:
-
-alias fpm='sudo /Applications/MNPP/init/php.sh 54 start'
-export PATH=/usr/local/sbin:/Applications/MNPP/init:/Applications/MNPP/Library/php54/bin:/Applications/MNPP/Library/mysql/bin:/Users/Luin/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Luin/.rvm/bin:/Users/Luin/.rvm/bin:/Users/luin/.rvm/bin:/usr/local/opt/ruby/bin
