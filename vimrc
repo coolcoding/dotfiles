@@ -19,7 +19,7 @@ set incsearch           " Do incremental searching
 " Backup & undo
 set nowritebackup
 set nobackup
-set directory=/tmp//    " prepend(^=) $HOME/.tmp/ to default path; use full path as backup filename(//)
+set directory=$HOME/.tmp/    " prepend(^=) $HOME/.tmp/ to default path; use full path as backup filename(//)
 
 set undofile
 set undodir=~/.vim/undo
@@ -102,6 +102,7 @@ Bundle 'groenewege/vim-less'
 Bundle 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
 let g:syntastic_phpcs_conf = "--tab-width=4 --standard=CodeIgniter"
+let g:syntastic_javascript_checkers = ['jshint']
 
 Bundle 'tpope/vim-markdown'
 Bundle 'vim-scripts/bufexplorer.zip'
@@ -117,6 +118,7 @@ Bundle "taiansu/nerdtree-ag"
 " Bundle 'terryma/vim-multiple-cursors'
 Bundle 'joedicastro/vim-multiple-cursors'
 Bundle 'Raimondi/delimitMate'
+noremap <silent> [ :DelimitMateSwitch<CR>
 
 " Dash
 Bundle 'rizzatti/funcoo.vim'
@@ -140,7 +142,10 @@ Bundle 'mattn/emmet-vim'
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 
-Bundle 'jnwhiteh/vim-golang'
+Bundle 'fatih/vim-go'
+let g:go_disable_autoinstall = 1
+let g:go_fmt_fail_silently = 1
+let g:go_fmt_autosave = 0
 Bundle 'kchmck/vim-coffee-script'
 autocmd FileType litcoffee runtime ftplugin/coffee.vim
 
@@ -163,6 +168,16 @@ Bundle 'wellle/targets.vim'
 Bundle 'wting/rust.vim'
 Bundle 'vim-scripts/applescript.vim'
 Bundle 'airblade/vim-gitgutter'
+Bundle 'mxw/vim-jsx'
+Bundle "Chiel92/vim-autoformat"
+" go get code.google.com/p/rog-go/exp/cmd/godef
+Bundle "dgryski/vim-godef"
+Bundle "alunny/pegjs-vim"
+Bundle 'godlygeek/tabular'
+noremap for :Tabularize /
+Bundle 'sjl/gundo.vim'
+Bundle 'mustache/vim-mustache-handlebars'
+Bundle 'cespare/vim-toml'
 " }}}
 
 " Formatting {{{
@@ -276,7 +291,7 @@ endif
 vnoremap , <gv
 vnoremap . >gv
 
-vnoremap ! !ruby<CR>
+vnoremap ! !node<CR>
 
 " make Y behave like other capitals
 noremap Y y$
@@ -291,7 +306,7 @@ noremap Y y$
 
 nnoremap <Tab> %
 nnoremap \ :!open <C-R>%<CR><CR>
-nnoremap U <C-r>
+nnoremap U :GundoToggle<CR>
 
 " Window Navigation
 noremap <C-J> <C-W>j
